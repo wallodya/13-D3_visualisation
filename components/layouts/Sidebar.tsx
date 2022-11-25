@@ -3,8 +3,8 @@ import Link from "next/link"
 
 const Sidebar: React.FC = () => {
 	return (
-		<div className={styles.sidebar}>
-			<ul>
+		<div className="px-12 py-6 fixed h-full bg-gray-900 shadow-2xl">
+			<ul className="flex flex-col gap-3">
 				<li>
 					<Navlink href={'/heatmap'} text={'Heatmap'}/>
 				</li>
@@ -30,7 +30,7 @@ const Navlink: React.FC<NavlinkProps> = ({href, text} : NavlinkProps) : JSX.Elem
 	return (
         <Link
             href={href}
-            className="text-xl font-bold text-white hover:text-blue-600"
+            className="text-2xl font-bold text-white hover:text-blue-700 transition"
         >
             {text}
         </Link>
