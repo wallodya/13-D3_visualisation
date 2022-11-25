@@ -7,9 +7,11 @@ type Props = {
 
 const Layout: React.FC<Props> = ({ children }) => {
 	return (
-		<div className="bg-gray-900 w-full h-full">
+		<div className="flex bg-gray-900 w-full h-full">
 			<Sidebar />
-			{children}
+             <div className="px-12 py-6">
+			    {children}
+             </div>
 		</div>
 	)
 }
