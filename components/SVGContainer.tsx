@@ -1,17 +1,4 @@
-import Heading from "../../components/Heading"
-
-const Scatterplot: React.FC = (): JSX.Element => {
-	return (
-		<>
-			<Heading text={"Scatterplot"} />
-            <SVGContainer svgFunc={function (): void {
-                throw new Error("Function not implemented.")
-            } }/>
-		</>
-	)
-}
-
-export default Scatterplot
+import { useRef } from "react"
 
 type SVGContainerProps = {
     svgFunc: () => void,
@@ -28,5 +15,18 @@ const SVGContainer = ({svgFunc, width=600, height=400}: SVGContainerProps) : JSX
      * 
      * @returns JSX Element: div with SVG inside
      * **/
+
+    const container = useRef()
+
+    useCallback(
+      () => {
+        svgFunc
+      },
+      [svgFunc],
+    )
+    
+
     return <div className="border"></div>
 }
+
+export default SVGContainer
