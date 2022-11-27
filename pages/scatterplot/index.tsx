@@ -1,32 +1,25 @@
+import { useCallback } from "react"
+import { render } from "react-dom"
 import Heading from "../../components/Heading"
+import SVGContainer from "../../components/SVGContainer"
+import renderScatterplot from "../../utils/D3/scatterplot"
+
+const URL = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
 
 const Scatterplot: React.FC = (): JSX.Element => {
+
+    useCallback(() => {
+        renderScatterplot
+    },[])
+
 	return (
 		<>
 			<Heading text={"Scatterplot"} />
-            <SVGContainer svgFunc={function (): void {
-                throw new Error("Function not implemented.")
-            } }/>
+            <SVGContainer svgFunc={renderScatterplot} width={600} height={400} URL={URL}/>
 		</>
 	)
 }
 
 export default Scatterplot
 
-type SVGContainerProps = {
-    svgFunc: () => void,
-    width?: number,
-    height?: number
-}
 
-const SVGContainer = ({svgFunc, width=600, height=400}: SVGContainerProps) : JSX.Element => {
-    /**
-     * Returns a div with SVG visualisation inside it
-     * 
-     * @param width - Width of the container (optional)
-     * @param height - Height of the container (optional)
-     * 
-     * @returns JSX Element: div with SVG inside
-     * **/
-    return <div className="border"></div>
-}

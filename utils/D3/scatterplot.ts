@@ -1,7 +1,7 @@
 import * as d3 from "d3"
 import { NumberValue } from "d3"
 import { getData } from "../api"
-import { dopingAPIResponse } from "../utils.types"
+import { dopingAPIResponse, renderScatterplotType } from "../utils.types"
 
 /**
  * Converts time in "12:00" format to integer
@@ -23,13 +23,9 @@ const timeToInt = (time: string) : number => {
  * @param URL URL to fetch data from
  * @returns void
  */
-const renderScatterplot = async (
-    width: number,
-    height: number,
-    URL: string
-    ) : Promise<void> => {
+const renderScatterplot : renderScatterplotType = async (container, width, height, data) => {
 
-	const dataset = await getData(URL) as dopingAPIResponse
+	const dataset = data
 
 	const H = height
 	const W = width
@@ -67,8 +63,7 @@ const renderScatterplot = async (
 			int => `${Math.floor(+int / 60)}:${("0" + (+int % 60)).slice(-2)}`
 		)
 
-	const chart = d3
-		.select("#chart-container")
+	const chart = d3.select("#chart-container")
 		.append("svg")
 		.attr("class", "chart-container")
 		.attr("width", W)
