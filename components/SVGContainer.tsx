@@ -47,7 +47,7 @@ const SVGContainer = ({ svgFunc, URL }: SVGContainerProps): JSX.Element => {
 		<div
 			ref={container}
 			id={"chart-container"}
-			className="border bg-white rounded-xl mt-8 max-w-4xl"
+			className="border bg-white rounded-xl mt-8 max-w-6xl"
 		></div>
 	)
 }

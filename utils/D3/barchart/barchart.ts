@@ -2,7 +2,7 @@ import * as d3 from "d3"
 import styles from './barchart.module.css'
 import { RenderBarchartType } from "../../utils.types"
 
-const renderBarchart: RenderBarchartType = async (
+const renderBarchart: RenderBarchartType = (
 	conatiner,
 	width,
 	height,
@@ -71,11 +71,11 @@ const renderBarchart: RenderBarchartType = async (
 				.transition()
 				.duration(300)
 				.style("opacity", 0.9)
+                
+                tooltip
+				.html("Date: " + d[0] + "<br/>" + "GDP: " + d[1])
 				.style("left", event.clientX + "px")
 				.style("top", event.clientY + "px")
-
-			tooltip
-				.html("Date: " + d[0] + "<br/>" + "GDP: " + d[1])
 		})
 		.on("mouseout", d => {
 			tooltip

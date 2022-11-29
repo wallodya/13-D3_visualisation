@@ -79,16 +79,27 @@ const renderHeatmap: RenderHeatmapType = (container, width, height, data) => {
 		.domain([minXValue, maxXValue])
 		.range([PADDING_SIDE, W - PADDING_SIDE])
 
+    // const xScale = d3
+    //     .scaleBand()
+    //     .range([PADDING_SIDE, W - PADDING_SIDE])
+    //     // .range([0, 1000])
+    //     .domain(dataset.monthlyVariance.map(d => d.year.toString()))
+    //     .round(true)
+    // console.log(dataset.monthlyVariance.map(d => d.year.toString()))
 	const yScale = d3
-		.scaleLinear()
-		.domain([0.5, 12.5])
+		.scaleBand()
+		.domain(MONTH_NAMES)
 		.range([PADDING, H - PADDING * 3])
+        .round(true)
 
-	const xAxis = d3.axisBottom(xScale).tickFormat(value => `${value}`)
+	const xAxis = d3
+        .axisBottom(xScale)
+        // .tickValues(["1760", "1800"])
+        // .tickFormat(value => `${value}`)
 
 	const yAxis = d3
 		.axisLeft(yScale)
-		.tickFormat(value => MONTH_NAMES[+value - 1])
+		// .tickFormat(value => MONTH_NAMES[+value - 1])
 
 	heatmap
 		.selectAll("rect")
@@ -97,9 +108,9 @@ const renderHeatmap: RenderHeatmapType = (container, width, height, data) => {
 		.append("rect")
 		.attr("class", "cell")
 		.attr("x", d => xScale(d.year))
-		.attr("y", d => yScale(d.month) - 8)
-		.attr("width", RECT_WIDTH)
-		.attr("height", 16)
+		.attr("y", d => yScale(MONTH_NAMES[d.month - 1]) as number)
+		.attr("width", d => xScale(d.year) - xScale(d.year - 1))
+		.attr("height", yScale.bandwidth())
 		.attr("data-month", d => d.month - 1)
 		.attr("data-year", d => d.year)
 		.attr("data-temp", d => BASE_TEMP + d.variance)
