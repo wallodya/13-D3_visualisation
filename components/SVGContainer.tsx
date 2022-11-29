@@ -1,49 +1,55 @@
 import { useQuery } from "@tanstack/react-query"
-import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
+import { RefObject, useRef } from "react"
 import { getData } from "../utils/api"
-import { dopingAPIResponse, renderScatterplotType } from "../utils/utils.types"
+import {
+	RenderBarchartType,
+	RenderChoroplethType,
+	RenderHeatmapType,
+	RenderScatterplotType,
+	RenderTreemapType,
+} from "../utils/utils.types"
 
 type SVGContainerProps = {
-    svgFunc: renderScatterplotType,
-    URL: string
-    width?: number,
-    height?: number
+	svgFunc:
+		| RenderScatterplotType
+		| RenderBarchartType
+		| RenderHeatmapType
+		| RenderChoroplethType
+		| RenderTreemapType
+	URL: string
 }
 
 /**
  * Returns a div with SVG visualisation inside it
- * 
+ *
  * @param svgFunc Function that renders SVG
- * @param width - Width of the container (optional)
- * @param height - Height of the container (optional)
- * 
+ *
  * @returns JSX Element: div with SVG inside
  * */
-const SVGContainer = ({svgFunc, URL, width=600, height=400}: SVGContainerProps) : JSX.Element => {
+const SVGContainer = ({ svgFunc, URL }: SVGContainerProps): JSX.Element => {
+	const container = useRef(null) as RefObject<HTMLDivElement>
 
-    const container = useRef() as RefObject<HTMLDivElement>
+	useQuery(
+		["dataset", "scatterplot"],
+		() => {
+			return getData(URL)
+		},
+		{
+			onSuccess(data) {
+				const svgWidth = container.current?.offsetWidth as number
+				const svgHeight = Math.floor(svgWidth / 1.41)
+				svgFunc(container, svgWidth, svgHeight, data)
+			},
+		}
+	)
 
-    const { data } = useQuery(['dataset', 'scatterplot'], () => {
-        return getData(URL) 
-    }, {
-        onSuccess(data) {
-            // container 
-            svgFunc(
-                container,
-                width,
-                height,
-                data
-            ) 
-        },
-    })
-    
-    return(
-        <div
-            ref={container}
-            id={'chart-container'}
-            className="border"
-        ></div>
-    )
+	return (
+		<div
+			ref={container}
+			id={"chart-container"}
+			className="border bg-white rounded-xl mt-8 max-w-4xl"
+		></div>
+	)
 }
 
 export default SVGContainer

@@ -1,9 +1,9 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body, #__next {
-    width: 100vw;
-    height: 100vh;
+@layer base {
+    body {
+        @apply bg-gray-900
+    }
 }

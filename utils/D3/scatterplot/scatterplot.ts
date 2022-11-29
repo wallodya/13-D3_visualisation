@@ -1,7 +1,6 @@
 import * as d3 from "d3"
-import { NumberValue } from "d3"
-import { getData } from "../api"
-import { dopingAPIResponse, renderScatterplotType } from "../utils.types"
+import { RenderScatterplotType } from "../../utils.types"
+import styles from './scatterplot.module.css'
 
 /**
  * Converts time in "12:00" format to integer
@@ -13,7 +12,6 @@ const timeToInt = (time: string) : number => {
 	return +time.split(":")[0] * 60 + +time.split(":")[1]
 }
 
-
 /**
  * 
  * Renders a scatterplot, for now works only for one case
@@ -23,7 +21,7 @@ const timeToInt = (time: string) : number => {
  * @param URL URL to fetch data from
  * @returns void
  */
-const renderScatterplot : renderScatterplotType = async (container, width, height, data) => {
+const renderScatterplot : RenderScatterplotType = (container, width, height, data) => {
 
 	const dataset = data
 
@@ -62,6 +60,13 @@ const renderScatterplot : renderScatterplotType = async (container, width, heigh
 		.tickFormat(
 			int => `${Math.floor(+int / 60)}:${("0" + (+int % 60)).slice(-2)}`
 		)
+    
+    d3.select("#chart-container")
+        .selectAll('*')
+        .remove()
+
+    d3.select('#tooltip')
+        .remove()
 
 	const chart = d3.select("#chart-container")
 		.append("svg")
@@ -72,7 +77,8 @@ const renderScatterplot : renderScatterplotType = async (container, width, heigh
 	const tooltip = d3
 		.select("body")
 		.append("div")
-		.attr("class", "tooltip")
+		.attr("id", 'tooltip')
+        .attr('class', styles.tooltip)
 		.style("opacity", 0)
 
 	chart

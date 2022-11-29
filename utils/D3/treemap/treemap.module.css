@@ -1,0 +1,14 @@
+.tooltip {
+    position: absolute;
+    background-color: #398ad7d0;
+    width: max-content;
+    color: black;
+    font-size: 0.6rem;
+    line-height: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.chart-container {
+    background-color: white;
+}
