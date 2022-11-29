@@ -1,14 +1,17 @@
 import * as d3 from "d3"
+import * as d3plus from 'd3plus'
 import styles from "./treemap.module.css"
 import { Movie, RenderTreemapType } from "../../utils.types"
+import { schemeGnBu } from "d3"
 
 const renderTreemap: RenderTreemapType = (container, width, height, data) => {
 	const dataset = data
 
 	const W = width
 	const H = height
-    const PADDING = 40
-    const PADDING_SIDE = PADDING * 2
+	const PADDING = 40
+	const PADDING_SIDE = PADDING * 2
+    const MIN_TEXT_WIDTH = 70
 
 	const LEGEND = [
 		{
@@ -73,99 +76,117 @@ const renderTreemap: RenderTreemapType = (container, width, height, data) => {
 		.attr("class", styles.tooltip)
 		.style("opacity", 0)
 
-    const hierarchy = d3.hierarchy(dataset)
-    const root = hierarchy.sum(d => d.value)
+	const hierarchy = d3.hierarchy(dataset)
+	const root = hierarchy.sum(d => d.value)
 
-    d3.treemap()
-    .size([W - PADDING_SIDE * 2, H - PADDING * 4])
-    .padding(0)
-    (root)
+	d3
+		.treemap()
+		.size([W - PADDING_SIDE * 2, H - PADDING * 4])
+		.padding(0)(root)
 
-    svg
-    .selectAll('.tile')
-    .data(root.leaves())
-    .enter()
-    .append('rect')
-      .attr('class', 'tile')
-      .attr('data-name', d => d.data.name)
-      .attr('data-category', d => d.data.category)
-      .attr('data-value', d => d.data.value)
-      .attr('x', d => PADDING_SIDE + d.x0)
-      .attr('y', d => PADDING * 1.5 + d.y0)
-      .attr('width', d => d.x1 - d.x0)
-      .attr('height', d => d.y1 - d.y0)
-      .attr('fill', d => LEGEND.find(genre => genre.text === d.data.category)?.fill ?? '#000000')
-      .attr('stroke', 'white')
-      .on('mouseover', (event, d) => {
-        tooltip
-          .transition()
-          .duration(300)
-          .style('opacity', 0.9)
-          .attr('data-value', d.data.value)
-        tooltip
-          .style('left', event.clientX + 'px')
-          .style('top', event.clientY + 'px')
-          .html(`
+	svg.selectAll(".tile")
+		.data(root.leaves())
+		.enter()
+		.append("rect")
+		.attr("class", "tile")
+        .attr('id', d => 'tile-' + d.data.name)
+		.attr("data-name", d => d.data.name)
+		.attr("data-category", d => d.data.category)
+		.attr("data-value", d => d.data.value)
+		.attr("x", d => PADDING_SIDE + d.x0)
+		.attr("y", d => PADDING * 1.5 + d.y0)
+		.attr("width", d => d.x1 - d.x0)
+		.attr("height", d => d.y1 - d.y0)
+		.attr(
+			"fill",
+			d =>
+				LEGEND.find(genre => genre.text === d.data.category)?.fill ??
+				"#000000"
+		)
+		.attr("stroke", "white")
+		.on("mouseover", (event, d) => {
+			tooltip
+				.transition()
+				.duration(300)
+				.style("opacity", 0.9)
+				.attr("data-value", d.data.value)
+			tooltip
+				.style("left", event.clientX + "px")
+				.style("top", event.clientY + "px").html(`
             <strong>${d.data.name}</strong><br>
             Category: ${d.data.category}<br>
-            Value: ${
-              new Intl.NumberFormat('de-DE', {
-                  style: 'currency',
-                  currency: 'USD'
-                })
-                .format(d.data.value)
-            }
+            Value: ${new Intl.NumberFormat("de-DE", {
+				style: "currency",
+				currency: "USD",
+			}).format(d.data.value)}
           `)
-      })
-      .on('mouseleave', () => {
-        tooltip
-          .transition()
-          .duration(300)  
-          .style('opacity', 0)
-      })
+		})
+		.on("mouseleave", () => {
+			tooltip.transition().duration(300).style("opacity", 0)
+		})
 
-      svg
-      .append('text')
-      .text('Movie Sales')
-      .attr('x', W / 2)
-      .attr('y', PADDING / 2)
-      .attr('text-anchor', 'middle')
-      .attr('font-weight', 'bold')
-      .attr('font-size', 20)
-      .attr('id', 'title')
+    svg.selectAll('.tile-text')
+        .data(root.leaves())
+        .enter()
+        .append('text')
+        .text(d => (d.x1 - d.x0) > MIN_TEXT_WIDTH ? d.data.name : '...')
+        .attr('x', d => PADDING_SIDE + d.x0 + 4)
+        .attr('y', d => PADDING * 1.5 + d.y0 + 20)
+        .attr('font-size', 10)
+        .attr('font-weight', 'bold')
+        // .style('opacity', d => (d.x1 - d.x0) <= MIN_TEXT_WIDTH ? 0 : 0.9)
+
     
-    svg
-      .append('text')
-      .text('Top 100 Highest Grossing Movies Grouped By Genre')
-      .attr('x', W / 2)
-      .attr('y', PADDING)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', 8)
-      .attr('id', 'description')
-    
-    const legendContainer = svg.append('g').attr('id', 'legend')
-    
-    legendContainer
-      .selectAll('rect')
-      .data(LEGEND)
-      .enter()
-      .append('rect') 
-      .attr('class', 'legend-item')
-      .attr('width', 16)
-      .attr('height', 16)
-      .attr('y', (d, i) => H - PADDING * 2 + getLegendY(i))
-      .attr('x', (d, i) => W / 2 - legendItemWidth * 1.5 + getLegendX(i))
-      .attr('fill', d => d.fill)
-    
-    legendContainer
-      .selectAll('text')
-      .data(LEGEND)
-      .enter()
-      .append('text')
-      .text(d => d.text)
-      .attr('font-size', 10)
-      .attr('y', (d, i) => legendTextMarginTop + H - PADDING * 2 + getLegendY(i))
-      .attr('x', (d, i) => legendTextMarginLeft + W / 2 - legendItemWidth * 1.5 + getLegendX(i)) 
+	svg.append("text")
+		.text("Movie Sales")
+		.attr("x", W / 2)
+		.attr("y", PADDING / 2)
+		.attr("text-anchor", "middle")
+		.attr("font-weight", "bold")
+		.attr("font-size", 20)
+		.attr("id", "title")
+
+	svg.append("text")
+		.text("Top 100 Highest Grossing Movies Grouped By Genre")
+		.attr("x", W / 2)
+		.attr("y", PADDING)
+		.attr("text-anchor", "middle")
+		.attr("font-size", 8)
+		.attr("id", "description")
+
+	const legendContainer = svg.append("g").attr("id", "legend")
+
+	legendContainer
+		.selectAll("rect")
+		.data(LEGEND)
+		.enter()
+		.append("rect")
+		.attr("class", "legend-item")
+		.attr("width", 16)
+		.attr("height", 16)
+		.attr("y", (d, i) => H - PADDING * 2 + getLegendY(i))
+		.attr("x", (d, i) => W / 2 - legendItemWidth * 1.5 + getLegendX(i))
+		.attr("fill", d => d.fill)
+
+	legendContainer
+		.selectAll("text")
+		.data(LEGEND)
+		.enter()
+		.append("text")
+		.text(d => d.text)
+		.attr("font-size", 10)
+		.attr(
+			"y",
+			(d, i) => legendTextMarginTop + H - PADDING * 2 + getLegendY(i)
+		)
+		.attr(
+			"x",
+			(d, i) =>
+				legendTextMarginLeft +
+				W / 2 -
+				legendItemWidth * 1.5 +
+				getLegendX(i)
+		)
 }
 
 export default renderTreemap
