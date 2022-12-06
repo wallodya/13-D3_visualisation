@@ -79,13 +79,6 @@ const renderHeatmap: RenderHeatmapType = (container, width, height, data) => {
 		.domain([minXValue, maxXValue])
 		.range([PADDING_SIDE, W - PADDING_SIDE])
 
-    // const xScale = d3
-    //     .scaleBand()
-    //     .range([PADDING_SIDE, W - PADDING_SIDE])
-    //     // .range([0, 1000])
-    //     .domain(dataset.monthlyVariance.map(d => d.year.toString()))
-    //     .round(true)
-    // console.log(dataset.monthlyVariance.map(d => d.year.toString()))
 	const yScale = d3
 		.scaleBand()
 		.domain(MONTH_NAMES)
@@ -94,12 +87,9 @@ const renderHeatmap: RenderHeatmapType = (container, width, height, data) => {
 
 	const xAxis = d3
         .axisBottom(xScale)
-        // .tickValues(["1760", "1800"])
-        // .tickFormat(value => `${value}`)
 
 	const yAxis = d3
-		.axisLeft(yScale)
-		// .tickFormat(value => MONTH_NAMES[+value - 1])
+		.axisLeft(yScale)		// .tickFormat(value => MONTH_NAMES[+value - 1])
 
 	heatmap
 		.selectAll("rect")

@@ -13,13 +13,7 @@ import {
  */
 export const getData = (
 	URL: string
-): Promise<
-	DopingAPIResponse &
-		US_GDP_APIResponse &
-		TemperatureAPIResponse &
-		EducationAPIResponse &
-		MoviesAPIResponse
-> => {
+) => {
 	return new Promise((resolve, reject) => {
 		fetch(URL)
 			.then(res => res.json())
@@ -27,3 +21,11 @@ export const getData = (
 			.catch(err => reject(err))
 	})
 }
+
+type GetData = Promise<
+	DopingAPIResponse &
+		US_GDP_APIResponse &
+		TemperatureAPIResponse &
+		EducationAPIResponse &
+		MoviesAPIResponse
+>

@@ -52,4 +52,8 @@ const SVGContainer = ({ svgFunc, URL }: SVGContainerProps): JSX.Element => {
 	)
 }
 
+export async function getServerSideProps() {
+    
+}
+
 export default SVGContainer

@@ -31,7 +31,7 @@ type Vehicle = {
     brand: string
 }
 
-type Car = {
+type Car = Product & {
     type: string;
     model: string;
-} & Vehicle & Product
+} & Vehicle

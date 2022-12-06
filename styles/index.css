@@ -7,3 +7,12 @@
         @apply bg-gray-900
     }
 }
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body, #__next {
+    height: 100vh;
+}
