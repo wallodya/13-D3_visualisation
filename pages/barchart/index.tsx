@@ -1,6 +1,5 @@
 import { RefObject, useEffect, useRef } from "react"
 import Heading from "../../components/Heading"
-import SVGContainer from "../../components/SVGContainer"
 import { getData } from "../../utils/api"
 import renderBarchart from "../../utils/D3/barchart/barchart"
 import { US_GDP_APIResponse } from "../../utils/utils.types"
