@@ -1,5 +1,4 @@
 import * as d3 from "d3"
-import * as d3plus from 'd3plus'
 import styles from "./treemap.module.css"
 import { Movie, RenderTreemapType } from "../../utils.types"
 import { schemeGnBu } from "d3"
