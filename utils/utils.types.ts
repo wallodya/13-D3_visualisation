@@ -122,10 +122,10 @@ type MovieGenres = "Action" | "Drama" | "Adventure" | "Family" | "Animation" | "
 
 export type MoviesAPIResponse = {
     name: "Movies"
-    children: Array<{
+    children: {
         name: MovieGenres
         children: Array<Movie>
-    }>
+    }[]
 }
 
 export type RenderTreemapType = (
@@ -134,3 +134,21 @@ export type RenderTreemapType = (
     height: number,
     data: MoviesAPIResponse
 ) => void
+
+export type NodeData = {
+    name: string,
+    children: Node[] | Movie[] | NodeData[]
+}
+
+export type TreeNode = {
+    children: any[],
+    data: NodeData,
+    depth: number,
+    height: number,
+    parent: TreeNode | null,
+    value: number,
+    x0: number,
+    x1: number,
+    y0: number,
+    y1: number
+}

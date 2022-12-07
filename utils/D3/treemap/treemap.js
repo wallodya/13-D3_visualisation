@@ -1,9 +1,8 @@
 import * as d3 from "d3"
 import styles from "./treemap.module.css"
-import { Movie, RenderTreemapType } from "../../utils.types"
-import { schemeGnBu } from "d3"
+import { Movie, MoviesAPIResponse, RenderTreemapType, TreeNode } from "../../utils.types"
 
-const renderTreemap: RenderTreemapType = (container, width, height, data) => {
+const renderTreemap = (container, width, height, data) => {
 	const dataset = data
 
 	const W = width
@@ -49,11 +48,11 @@ const renderTreemap: RenderTreemapType = (container, width, height, data) => {
 	const legendTextMarginTop = Math.floor(legendItemHeight / 2)
 	const legendTextMarginLeft = 16 + 8
 
-	const getLegendX = (index: number): number => {
+	const getLegendX = (index) => {
 		return legendItemWidth * (index % legendItemsInRow)
 	}
 
-	const getLegendY = (index: number): number => {
+	const getLegendY = (index) => {
 		return legendItemHeight * Math.floor(index / legendItemsInRow)
 	}
 
@@ -89,9 +88,6 @@ const renderTreemap: RenderTreemapType = (container, width, height, data) => {
 		.append("rect")
 		.attr("class", "tile")
         .attr('id', d => 'tile-' + d.data.name)
-		.attr("data-name", d => d.data.name)
-		.attr("data-category", d => d.data.category)
-		.attr("data-value", d => d.data.value)
 		.attr("x", d => PADDING_SIDE + d.x0)
 		.attr("y", d => PADDING * 1.5 + d.y0)
 		.attr("width", d => d.x1 - d.x0)
