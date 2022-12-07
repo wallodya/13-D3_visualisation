@@ -1,6 +1,5 @@
 import { RefObject, useEffect, useRef } from "react"
 import Heading from "../../components/Heading"
-import SVGContainer from "../../components/SVGContainer"
 import { getData } from "../../utils/api"
 import renderTreemap from "../../utils/D3/treemap/treemap"
 import { MoviesAPIResponse } from "../../utils/utils.types"

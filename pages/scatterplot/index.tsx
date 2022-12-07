@@ -1,7 +1,5 @@
-import { RefObject, useCallback, useEffect, useRef } from "react"
-import { render } from "react-dom"
+import { RefObject, useEffect, useRef } from "react"
 import Heading from "../../components/Heading"
-import SVGContainer from "../../components/SVGContainer"
 import { getData } from "../../utils/api"
 import renderScatterplot from "../../utils/D3/scatterplot/scatterplot"
 import { DopingAPIResponse } from "../../utils/utils.types"

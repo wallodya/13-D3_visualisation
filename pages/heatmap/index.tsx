@@ -1,9 +1,8 @@
 import { RefObject, useEffect, useRef } from "react"
 import Heading from "../../components/Heading"
-import SVGContainer from "../../components/SVGContainer"
 import { getData } from "../../utils/api"
 import renderHeatmap from "../../utils/D3/heatmap/heatmap"
-import { DopingAPIResponse, TemperatureAPIResponse } from "../../utils/utils.types"
+import { TemperatureAPIResponse } from "../../utils/utils.types"
 
 const Heatmap = ({ data } : { data : TemperatureAPIResponse}) : JSX.Element => {
 
