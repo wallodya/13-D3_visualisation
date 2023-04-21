@@ -124,7 +124,7 @@ export type MoviesAPIResponse = {
     name: "Movies"
     children: {
         name: MovieGenres
-        children: Array<Movie>
+        children: Movie[]
     }[]
 }
 

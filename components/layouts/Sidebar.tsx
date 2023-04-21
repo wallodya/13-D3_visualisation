@@ -1,24 +1,33 @@
 import Link from "next/link"
 
+const PAGES: { name: string; link: string }[] = [
+	{
+		name: "Choropleth",
+		link: "/choropleth",
+	},
+	{
+		name: "Heatmap",
+		link: "/heatmap",
+	},
+	{
+		name: "Scatterplot",
+		link: "/choropleth",
+	},
+	{
+		name: "Barchart",
+		link: "/barchart",
+	},
+]
+
 const Sidebar: React.FC = () => {
 	return (
 		<nav className="sticky top-0 z-20 px-12 py-6 bg-gray-900">
 			<ul className="flex flex-col gap-3">
-				<li>
-					<Navlink href={'/choropleth'} text={'Choropleth'}/>
-				</li>
-				<li>
-					<Navlink href={'/heatmap'} text={'Heatmap'}/>
-				</li>
-				<li>
-					<Navlink href={'/treemap'} text={'Tree map'}/>
-				</li>
-				<li>
-					<Navlink href={'/scatterplot'} text={'Scatterplot'}/>
-				</li>
-				<li>
-					<Navlink href={'/barchart'} text={'Barchart'}/>
-				</li>
+				{PAGES.map(({ name, link }, index) => (
+					<li key={index}>
+						<Navlink href={link} text={name} />
+					</li>
+				))}
 			</ul>
 		</nav>
 	)
@@ -31,7 +40,7 @@ type NavlinkProps = {
     text: string
 }
 
-const Navlink: React.FC<NavlinkProps> = ({href, text} : NavlinkProps) : JSX.Element => {
+const Navlink: React.FC<NavlinkProps> = ({href, text} : NavlinkProps) => {
 	return (
         <Link
             href={href}

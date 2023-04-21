@@ -11,7 +11,7 @@ import {
 import { GeometryObject, Objects, Topology } from "topojson-specification"
 
 const renderChoropleth: RenderChoroplethType = async (
-	conatiner,
+	container,
 	width,
 	height,
 	data
@@ -40,7 +40,7 @@ const renderChoropleth: RenderChoroplethType = async (
 
 	const H = height
 	const W = width
-	const PADDING = 40
+	const PADDING = width > 500 ?  40 : Math.floor(width/10)
 	const PADDING_SIDE = PADDING * 2
 
 	const PERSENTAGE_STEPS = [3, 12, 21, 30, 39, 48, 57] as const
@@ -101,7 +101,7 @@ const renderChoropleth: RenderChoroplethType = async (
 		.attr("class", "counties")
 		.attr(
 			"transform",
-			`translate(${PADDING_SIDE}, ${PADDING * 2})scale(0.5)`
+			`translate(${PADDING_SIDE}, ${PADDING * 2})scale(0.7)`
 		)
 		.selectAll("path")
 		.data(counties)
